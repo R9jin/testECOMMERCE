@@ -27,7 +27,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // ✅ hash password
+            'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'gender' => $request->gender,
             'dob' => $request->dob,
@@ -47,13 +47,12 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        // ✅ Generate a Sanctum token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
-            'token' => $token // <-- send token to frontend
+            'token' => $token
         ], 200);
     }
 
@@ -61,10 +60,10 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
+        // 1. Validation: Allow both 'Other' (legacy data) and 'Others' (correct data)
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'phone' => 'sometimes|required|string|max:20',
-            
             'gender' => 'sometimes|required|in:Male,Female,Others,Other', 
             'dob' => 'sometimes|required|date',
         ]);
@@ -73,7 +72,21 @@ class AuthController extends Controller
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
 
-        $user->update($request->only(['name', 'phone', 'gender', 'dob']));
+        // 2. Prepare the data manually
+        $data = $request->only(['name', 'phone', 'dob']);
+
+        // 3. FIX: Check if gender is "Other" and force it to "Others"
+        if ($request->has('gender')) {
+            $gender = $request->input('gender');
+            if ($gender === 'Other') {
+                $data['gender'] = 'Others';
+            } else {
+                $data['gender'] = $gender;
+            }
+        }
+
+        // 4. Update with the sanitized data
+        $user->update($data);
 
         return response()->json([
             'success' => true,
@@ -81,5 +94,4 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
-
 }

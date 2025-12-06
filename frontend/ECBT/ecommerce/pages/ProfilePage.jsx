@@ -176,9 +176,9 @@ function ProfilePage() {
           />
 
           {/* 7. Button Feedback Implementation */}
-          <button 
-            type="submit" 
-            className={styles.saveBtn} 
+          <button
+            type="submit"
+            className={styles.saveBtn}
             disabled={updating} // Disable while updating
             style={{ opacity: updating ? 0.7 : 1, cursor: updating ? 'not-allowed' : 'pointer' }}
           >

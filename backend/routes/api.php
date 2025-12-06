@@ -17,7 +17,6 @@ Route::resource('products', ProductController::class)->only(['index', 'show']);
 // Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::put('/user', [AuthController::class, 'update']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -41,6 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Orders
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
+
+    // Authenticated user info
+    // ✅ PASTE IT HERE:
+    Route::put('/user', [AuthController::class, 'update']); 
 
     // Authenticated user info
     Route::get('/user', function (Request $request) {

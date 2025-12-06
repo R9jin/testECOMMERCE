@@ -11,7 +11,7 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 
 function ProductCard({ product }) {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, cartItems } = useContext(CartContext);
   const { wishlistItems, toggleWishlist } = useContext(WishlistContext);
   const { isLoggedIn } = useAuth();
 
@@ -20,6 +20,8 @@ function ProductCard({ product }) {
 
   // Safely handle wishlist checking (convert both to strings)
   const isWishlisted = wishlistItems.includes(String(product.product_id));
+  
+  const isInCart = cartItems.some(item => String(item.product_id) === String(product.product_id));
 
   // ✅ Helper to handle image URLs (local assets vs uploaded storage)
   const getImageUrl = (url) => {
@@ -96,7 +98,7 @@ function ProductCard({ product }) {
             <img
               src={cartIcon}
               alt="cart"
-              className={`${styles.cartIcon} ${showNotice ? styles.active : ""}`}
+              className={`${styles.cartIcon} ${isInCart || showNotice ? styles.active : ""}`} 
               onClick={handleAddToCart}
             />
           </div>
