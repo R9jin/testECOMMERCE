@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { login as apiLogin, getUser as apiGetUser } from "../api/auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import { login as apiLogin, updateUser as apiUpdateUser } from "../api/auth";
 
 const AuthContext = createContext();
 
@@ -54,9 +54,27 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("currentUser");
   };
 
+  const updateProfile = async (userData) => {
+    try {
+      const data = await apiUpdateUser(userData, token);
+      
+      if (data.success) {
+        // Update local state and storage
+        setCurrentUser(data.user);
+        localStorage.setItem("currentUser", JSON.stringify(data.user));
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || "Update failed" };
+      }
+    } catch (err) {
+      console.error(err);
+      return { success: false, error: "Network error" };
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, currentUser, token, login, logout }}
+      value={{ isLoggedIn, currentUser, token, login, logout, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

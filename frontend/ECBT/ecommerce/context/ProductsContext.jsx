@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { createProduct, deleteProduct, getProducts, updateProduct } from "../api/products";
+import { createProduct, deleteProduct, getProducts, restoreProducts, updateProduct } from "../api/products";
 import { useAuth } from "./AuthContext";
 
 export const ProductsContext = createContext();
@@ -34,8 +34,23 @@ export const ProductsProvider = ({ children }) => {
     return res;
   };
 
+  const restoreProductsAPI = async () => {
+    const res = await restoreProducts(token);
+    if (res.success) {
+      const allProducts = await getProducts();
+      if (allProducts.success) setProducts(allProducts.data);
+    }
+    return res;
+  };
+
   return (
-    <ProductsContext.Provider value={{ products, addProductAPI, updateProductAPI, deleteProductAPI }}>
+    <ProductsContext.Provider value={{ 
+      products,
+      addProductAPI,
+      updateProductAPI,
+      deleteProductAPI,
+      restoreProductsAPI
+    }}>
       {children}
     </ProductsContext.Provider>
   );

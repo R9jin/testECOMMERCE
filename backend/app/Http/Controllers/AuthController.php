@@ -57,4 +57,29 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'phone' => 'sometimes|required|string|max:20',
+            
+            'gender' => 'sometimes|required|in:Male,Female,Others,Other', 
+            'dob' => 'sometimes|required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 422);
+        }
+
+        $user->update($request->only(['name', 'phone', 'gender', 'dob']));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    }
+
 }

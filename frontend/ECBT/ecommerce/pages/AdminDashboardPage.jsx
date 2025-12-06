@@ -48,9 +48,6 @@ export default function AdminDashboardPage() {
     return fd;
   };
 
-
-
-
   const resetForm = () => {
     setForm({ id: "", name: "", category: "", price: "", stock: "", rating: "", description: "" });
     setImageFile(null);

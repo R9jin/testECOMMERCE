@@ -1,41 +1,56 @@
-import React, { useEffect, useState } from "react";
-import styles from "../styles/ProfilePage.module.css"; // ✅ CSS Module
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ProductsContext } from "../context/ProductsContext";
+import styles from "../styles/ProfilePage.module.css";
 import { safeParse } from "../utils/storage";
-import productsData from "../data/products.json";
 
 function ProfilePage() {
-  const [user, setUser] = useState(null);
   const [editableUser, setEditableUser] = useState({});
+  // 1. New state for loading status
+  const [updating, setUpdating] = useState(false); 
+  
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  
+  // 2. Destructure currentUser correctly
+  const { currentUser, logout, updateProfile } = useAuth();
+  const { restoreProductsAPI } = useContext(ProductsContext);
 
   useEffect(() => {
-    const current = safeParse("currentUser");
-    if (current) {
-      setUser(current);
-      setEditableUser(current);
+    if (currentUser) {
+      setEditableUser(currentUser);
     } else {
-      navigate("/login");
+      const stored = localStorage.getItem("currentUser");
+      if (stored) setEditableUser(JSON.parse(stored));
+      else navigate("/login");
     }
-  }, [navigate]);
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     setEditableUser({ ...editableUser, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    localStorage.setItem("currentUser", JSON.stringify(editableUser));
+    
+    // 3. Start loading
+    setUpdating(true); 
 
-    const users = safeParse("users");
-    const updatedUsers = users.map((u) =>
-      u.email === editableUser.email ? editableUser : u
-    );
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    try {
+      const result = await updateProfile(editableUser);
 
-    alert("✅ Profile updated successfully!");
+      if (result.success) {
+        alert("✅ Profile updated successfully!");
+      } else {
+        alert(`❌ Failed to update: ${result.error}`);
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("An unexpected error occurred.");
+    } finally {
+      // 4. Stop loading regardless of success or failure
+      setUpdating(false);
+    }
   };
 
   const handleLogout = () => {
@@ -49,15 +64,9 @@ function ProfilePage() {
   };
 
   const handleDelete = () => {
-    if (
-      window.confirm(
-        "⚠️ This action cannot be undone.\n\nAre you sure you want to permanently delete your account?"
-      )
-    ) {
+    if (window.confirm("⚠️ This action cannot be undone.\n\nAre you sure you want to permanently delete your account?")) {
       const users = safeParse("users");
-      const remainingUsers = users.filter(
-        (u) => u.email !== editableUser.email
-      );
+      const remainingUsers = users.filter((u) => u.email !== editableUser.email);
       localStorage.setItem("users", JSON.stringify(remainingUsers));
       localStorage.removeItem("currentUser");
       localStorage.removeItem("isLoggedIn");
@@ -69,15 +78,24 @@ function ProfilePage() {
 
   const handleOrderHistory = () => navigate("/order-history");
 
-  const handleRestoreProducts = () => {
-    if (window.confirm("Restore all products to default?")) {
-      localStorage.setItem("products", JSON.stringify(productsData));
-      alert("Products restored to default!");
-      window.location.reload();
+  const handleRestoreProducts = async () => {
+    if (window.confirm("⚠️ This will delete ALL products and re-seed the database to defaults. Continue?")) {
+      try {
+        const res = await restoreProductsAPI();
+        if (res.success) {
+          alert("✅ Database re-seeded successfully!");
+        } else {
+          alert("Failed to restore products.");
+        }
+      } catch (error) {
+        console.error("Restore error:", error);
+        alert("An error occurred connecting to the server.");
+      }
     }
   };
 
-  if (!user)
+  // 5. Check currentUser instead of 'user'
+  if (!currentUser)
     return <p style={{ textAlign: "center" }}>Please log in first.</p>;
 
   return (
@@ -92,14 +110,11 @@ function ProfilePage() {
           <button className={styles.btnDelete} onClick={handleDelete}>
             Delete Account
           </button>
-          <button
-            className={styles.btnOrderHistory}
-            onClick={handleOrderHistory}
-          >
+          <button className={styles.btnOrderHistory} onClick={handleOrderHistory}>
             Order History
           </button>
 
-          {user?.role === "admin" && (
+          {currentUser?.role === "admin" && (
             <>
               <button
                 className={styles.btnAdminDashboard}
@@ -148,7 +163,8 @@ function ProfilePage() {
             <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            {/* 6. Ensure value matches DB expectation */}
+            <option value="Others">Others</option> 
           </select>
 
           <label>Date of Birth</label>
@@ -159,8 +175,14 @@ function ProfilePage() {
             onChange={handleChange}
           />
 
-          <button type="submit" className={styles.saveBtn}>
-            UPDATE
+          {/* 7. Button Feedback Implementation */}
+          <button 
+            type="submit" 
+            className={styles.saveBtn} 
+            disabled={updating} // Disable while updating
+            style={{ opacity: updating ? 0.7 : 1, cursor: updating ? 'not-allowed' : 'pointer' }}
+          >
+            {updating ? "Updating..." : "UPDATE"}
           </button>
         </form>
       </div>

@@ -37,7 +37,9 @@
 .sidebarButtons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 /* Sidebar Buttons */

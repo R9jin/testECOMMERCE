@@ -24,3 +24,15 @@ export async function getUser(token) {
   });
   return res.json();
 }
+
+export async function updateUser(userData, token) {
+  const res = await fetch(`${API_BASE_URL}/user`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(userData),
+  });
+  return res.json();
+}
