@@ -1,0 +1,239 @@
+/* CartPage.module.css */
+
+.cartContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ---------- CART ITEM ---------- */
+.cartItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+}
+
+.cartItem img {
+  width: 100px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cartInfo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cartInfo p {
+  margin: 3px 0;
+}
+
+/* ---------- CART ACTIONS ---------- */
+.cartActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cartActions input[type="number"] {
+  width: 70px;
+  padding: 6px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.cartActions input[type="number"]:focus {
+  border-color: #ff4b2b;
+  box-shadow: 0 0 3px #ff4b2b;
+}
+
+.cartActions button {
+  background-color: #ff4b2b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cartActions button:hover {
+  background-color: white;
+  border: 2px solid #ff4b2b;
+  transform: scale(1.2);
+}
+
+.cartActions button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- STOCK STATUS ---------- */
+.inStock {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.outOfStock {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+/* ---------- SUBTOTAL AND TOTALS ---------- */
+.subtotal {
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.cartSummary {
+  margin-top: 15px;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.cartSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.total {
+  font-weight: 600;
+  font-size: 1.2rem;
+  border-top: 1px solid #ddd;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+/* ---------- CHECKOUT BUTTON ---------- */
+.cartButton {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #ff4b2b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  transition: all 0.3s ease;
+}
+
+.cartButton:hover {
+  background-color: white;
+  color: #ff4b2b;
+  border: 3px solid #ff4b2b;
+}
+
+/* ---------- REMOVE BUTTON ---------- */
+.removeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.cancelIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+/* ---------- RESPONSIVENESS ---------- */
+
+/* Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .cartItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .cartInfo img {
+    width: 80px;
+    height: 70px;
+  }
+
+  .cartActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cartButton {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .cartSummary {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet (481px – 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .cartItem {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .cartInfo img {
+    width: 90px;
+    height: 70px;
+  }
+
+  .cartActions {
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+  .cartSummaryRow span {
+    font-size: 0.95rem;
+  }
+}
+
+/* Desktop (>= 769px) */
+@media (min-width: 769px) {
+  .cartItem {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cartInfo img {
+    width: 100px;
+    height: 80px;
+  }
+
+  .cartSummaryRow span {
+    font-size: 1rem;
+  }
+}

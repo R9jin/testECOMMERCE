@@ -1,0 +1,143 @@
+.orderContainer {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.transactionInfo p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+}
+
+.transactionTotal {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #111;
+}
+
+.cartItem {
+  margin-bottom: 2rem;
+}
+
+.orderTable {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.orderTable th {
+  background-color: #ff4b2b;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.orderTable td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.orderTable th:nth-child(1),
+.orderTable td:nth-child(1) { width: 60px; }
+.orderTable th:nth-child(2),
+.orderTable td:nth-child(2) { width: 40%; }
+.orderTable th:nth-child(3),
+.orderTable td:nth-child(3) { width: 15%; }
+.orderTable th:nth-child(4),
+.orderTable td:nth-child(4) { width: 15%; }
+.orderTable th:nth-child(5),
+.orderTable td:nth-child(5) { width: 20%; }
+
+.orderItemImg {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ff4b2b;
+}
+
+.trackOrderBtn {
+  background-color: #ff4b2b;
+  color: white;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.trackOrderBtn:hover {
+  background-color: #ff4b2b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.buyAgainBtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.buyAgainBtn:hover {
+  background-color: #3e8e41;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.rateOrderBtn {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.rateOrderBtn:hover {
+  background-color: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .trackOrderBtn,
+  .buyAgainBtn,
+  .rateOrderBtn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1rem;
+  }
+
+  .orderContainer {
+    padding: 0.5rem;
+  }
+
+  .orderTable {
+    font-size: 0.9rem;
+    min-width: 600px;
+  }
+
+  .orderTable th, .orderTable td {
+    padding: 0.5rem;
+  }
+}

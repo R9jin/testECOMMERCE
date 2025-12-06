@@ -1,0 +1,239 @@
+.profileContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #fafafa;
+  min-height: 80vh;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.profileForm label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+}
+
+.sidebar h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ff4b2b;
+  padding-bottom: 10px;
+}
+
+.sidebarButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Sidebar Buttons */
+.btnLogout,
+.btnDelete,
+.btnOrderHistory,
+.btnAdminDashboard,
+.btnRestoreProducts {
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid #ff4b2b;
+  background: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.btnLogout {
+  color: #353535;
+  border-color: #ff4b2b;
+}
+
+.btnLogout:hover {
+  background-color: #ff4b2b;
+  color: white;
+}
+
+.btnDelete {
+  color: #353535;
+  border-color: #e53935;
+}
+
+.btnDelete:hover {
+  background-color: #e53935;
+  color: white;
+}
+
+.btnOrderHistory {
+  color: #353535;
+  border-color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btnOrderHistory:hover {
+  background-color: #363636;
+  color: white;
+}
+
+.btnAdminDashboard {
+  color: #353535;
+  border-color: #31c200;
+}
+
+.btnAdminDashboard:hover {
+  color: white;
+  background-color: #31c200;
+}
+
+.btnRestoreProducts {
+  color: #353535;
+  border-color: rgb(0, 131, 131);
+}
+
+.btnRestoreProducts:hover {
+  color: white;
+  background-color: rgb(0, 131, 131);
+}
+
+/* Profile content */
+.profileContent {
+  width: 70%;
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.profileContent h2 {
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600;
+  border-left: 5px solid #ff4b2b;
+  padding-left: 10px;
+}
+
+/* Profile Form */
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profileForm input[type="text"],
+.profileForm input[type="email"],
+.profileForm input[type="date"],
+.profileForm select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s ease;
+  font-size: 1rem;
+}
+
+.profileForm input:focus,
+.profileForm select:focus {
+  border-color: #ff4b2b;
+}
+
+/* Save button */
+.saveBtn {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #ff4b2b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.saveBtn:hover {
+  background-color: #ff4b2b;
+  transform: scale(1.02);
+}
+
+/* No user fallback */
+.noUser {
+  text-align: center;
+  padding: 60px;
+  color: #777;
+  font-size: 1.1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .profileContainer {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  .sidebar {
+    width: 90%;
+    order: 1;
+  }
+
+  .profileContent {
+    width: 90%;
+    order: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .profileContainer {
+    padding: 20px 15px;
+  }
+
+  .sidebar h3 {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .sidebarButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btnLogout,
+  .btnDelete,
+  .btnOrderHistory {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .profileContent {
+    padding: 20px;
+  }
+
+  .profileContent h2 {
+    font-size: 1.1rem;
+  }
+
+  .profileForm input,
+  .profileForm select {
+    font-size: 0.95rem;
+  }
+
+  .saveBtn {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+}

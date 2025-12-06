@@ -1,0 +1,297 @@
+/* AdminDashboard.module.css */
+
+/* --- Dashboard Container --- */
+.adminDashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #333;
+}
+
+/* --- Add Product Form --- */
+.addForm {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.addForm input,
+.addForm textarea,
+.addForm select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.addForm textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.addForm button {
+  background-color: #ff4b2b;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 150px;
+  align-self: flex-start;
+}
+
+.addForm button:hover {
+  background-color: #e03b1f;
+}
+
+/* --- Dropzone --- */
+.dropzone {
+  border: 2px dashed #ff4b2b;
+  background-color: #fff5f2;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dropzone p {
+  color: #ff4b2b;
+  font-weight: 500;
+}
+
+.preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+/* --- Products Table --- */
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.productsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.productsTable th,
+.productsTable td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.productsTable th {
+  background-color: #ff4b2b;
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.productsTable td {
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+.thumb {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Table Buttons */
+.tableButton {
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 4px;
+  transition: all 0.2s ease;
+}
+
+/* Edit Button */
+.editBtn {
+  background-color: #4caf50; /* green */
+  color: white;
+}
+
+.editBtn:hover {
+  background-color: #45a049;
+}
+
+/* Delete Button */
+.deleteBtn {
+  background-color: #f44336; /* red */
+  color: white;
+}
+
+.deleteBtn:hover {
+  background-color: #d32f2f;
+}
+
+.tableButton:hover {
+  background-color: #ff4b2b;
+}
+
+/* --- Select Arrow --- */
+select {
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+/* --- Responsive Styling --- */
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+  .adminDashboard {
+    padding: 1.5rem;
+  }
+
+  .addForm {
+    padding: 1.5rem;
+  }
+
+  .productsTable th,
+  .productsTable td {
+    padding: 0.6rem;
+  }
+
+  .addForm button {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+/* Small screens (mobile) */
+@media (max-width: 600px) {
+  .adminDashboard {
+    padding: 1rem;
+  }
+
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+
+  .addForm {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .addForm input,
+  .addForm textarea,
+  .addForm select {
+    font-size: 0.95rem;
+  }
+
+  .productsTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .productsTable th,
+  .productsTable td {
+    font-size: 0.8rem;
+    padding: 0.45rem;
+  }
+
+  .thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tableButton {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Extra small screens (<420px) */
+@media (max-width: 420px) {
+  .adminDashboard {
+    padding: 0.75rem;
+  }
+
+  h1, h2 {
+    font-size: 1.2rem;
+  }
+
+  .addForm {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .addForm input,
+  .addForm textarea,
+  .addForm select {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+
+  .addForm button {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+    width: 100%;
+  }
+
+  .productsTable th,
+  .productsTable td {
+    padding: 0.35rem;
+  }
+
+  .thumb {
+    width: 35px;
+    height: 35px;
+  }
+
+  .tableButton {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.65rem;
+  }
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  background: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+}

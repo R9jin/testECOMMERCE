@@ -1,0 +1,48 @@
+.wishlistPage {
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #fafafa;
+}
+
+.wishlistPage h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.wishlistList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+}
+
+.emptyMsg {
+  text-align: center;
+  font-size: 1rem;
+  color: gray;
+  margin-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wishlistPage {
+    padding: 1.5rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wishlistPage {
+    padding: 1rem;
+  }
+
+  .wishlistPage h2 {
+    font-size: 1.5rem;
+  }
+}

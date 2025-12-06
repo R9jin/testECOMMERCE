@@ -1,0 +1,23 @@
+.footer {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-family: Arial, sans-serif;
+  border-top: 2px solid gray;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

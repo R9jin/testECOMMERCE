@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Giga Giorno",
+    "email": "username@gmail.com",
+    "password": "username123",
+    "phone": "09123456789",
+    "gender": "Male",
+    "dob": "2005-03-12",
+    "role": "user",
+    "isAdmin": false
+  },
+  {
+    "name": "Admin Master",
+    "email": "admin@gmail.com",
+    "password": "admin123",
+    "phone": "09999999999",
+    "gender": "Female",
+    "dob": "1990-01-01",
+    "role": "admin",
+    "isAdmin": true
+  }
+]

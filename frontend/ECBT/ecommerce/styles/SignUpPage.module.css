@@ -1,0 +1,132 @@
+.signupWrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+/* Form container */
+.signupFormContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 80px;
+}
+
+.signupFormContainer h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.signupFormContainer p {
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* Form fields */
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signupForm label {
+  font-weight: 500;
+  color: #333;
+}
+
+.signupForm input,
+.signupForm select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.signupForm input:focus,
+.signupForm select:focus {
+  border-color: #ff4b2b;
+}
+
+/* Signup button */
+.signupBtn {
+  background-color: #ff4b2b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.signupBtn:hover {
+  background-color: #e03e1f;
+}
+
+/* Login text/link */
+.loginText {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.loginLink {
+  color: #3b5b2e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginLink:hover {
+  text-decoration: underline;
+}
+
+/* Banner */
+.signupBanner {
+  flex: 1;
+  overflow: hidden;
+}
+
+.signupBanner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .signupWrapper {
+    flex-direction: column;
+  }
+
+  .signupFormContainer,
+  .signupBanner {
+    flex: none;
+    width: 100%;
+    padding: 0 40px;
+    height: auto;
+  }
+
+  .signupFormContainer {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .signupFormContainer {
+    padding: 0 20px;
+  }
+
+  .signupForm input,
+  .signupForm select,
+  .signupBtn {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+}

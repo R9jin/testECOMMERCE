@@ -1,0 +1,96 @@
+.trackOrderMainContainer {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Page heading */
+.trackOrderMainContainer h2 {
+  text-align: center;
+  color: #ff4b2b;
+  margin-bottom: 1.5rem;
+}
+
+/* Rating groups */
+.ratingGroup {
+  margin-bottom: 1rem;
+}
+
+.ratingGroup label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Stars */
+.star {
+  font-size: 1.8rem;
+  color: #464646;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 5px;
+}
+
+.star.active {
+  color: #ff4b2b;
+  transform: scale(1.2);
+}
+
+/* Review textarea */
+.reviewTextarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ff4b2b;
+  resize: vertical;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Submit button */
+.saveBtn {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background-color: #ff4b2b;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.saveBtn:hover {
+  background-color: #e03e1f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .trackOrderMainContainer {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .star {
+    font-size: 1.5rem;
+  }
+
+  .reviewTextarea {
+    font-size: 0.95rem;
+  }
+
+  .saveBtn {
+    font-size: 0.95rem;
+    padding: 10px 0;
+  }
+}
