@@ -5,9 +5,57 @@
   flex-direction: column;
   gap: 30px;
   padding: 0 20px;
-  overflow-x: auto; /* ✅ allows horizontal scroll for full container */
+  overflow-x: auto;
 }
 
+/* === NEW: Order Items List Card === */
+.orderItemsCard {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.orderItemsCard h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.orderItemRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.orderItemImage {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.orderItemInfo p {
+  margin: 0 0 5px 0;
+  font-weight: bold;
+}
+
+.orderItemPrice {
+  margin: 0;
+  color: #666;
+}
+
+.orderTotal {
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+/* === Existing Tracking Card === */
 .trackOrderCard {
   display: flex;
   align-items: center;
@@ -17,24 +65,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   gap: 30px;
   flex-wrap: wrap;
-  min-width: 600px; /* ✅ ensures scrollable width */
-}
-
-.trackOrderImg {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.trackOrderDetails {
-  flex: 2;
-  min-width: 200px;
-}
-
-.trackOrderDetails p {
-  margin: 6px 0;
-  font-weight: 500;
+  min-width: 600px;
 }
 
 .trackOrderStatus {
@@ -78,11 +109,6 @@
   font-weight: 600;
 }
 
-.statusDate {
-  font-size: 11px;
-  color: #aaa;
-}
-
 .trackOrderButtons {
   display: flex;
   flex-direction: column;
@@ -111,13 +137,19 @@
   color: #f44336;
 }
 
-.trackOrderButtons button:not(.cancelBtn) {
+.trackOrderButtons .rateOrderBtn {
+  background-color: #ff4b2b;
+  color: white;
+  border: none;
+}
+
+.trackOrderButtons button:not(.cancelBtn):not(.rateOrderBtn) {
   background: #fff;
   border: 1px solid #ccc;
   color: #333;
 }
 
-.trackOrderButtons button:not(.cancelBtn):hover {
+.trackOrderButtons button:not(.cancelBtn):not(.rateOrderBtn):hover {
   background: #f44336;
   color: white;
 }
@@ -128,71 +160,13 @@
   margin-top: 10px;
 }
 
-/* ====== RESPONSIVE ====== */
-@media (max-width: 1024px) {
-  .trackOrderCard {
-    gap: 20px;
-    padding: 18px;
-  }
-
-  .trackOrderImg {
-    width: 110px;
-    height: 110px;
-  }
-
-  .statusLabel {
-    font-size: 12px;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  /* ✅ make each card horizontally scrollable */
   .trackOrderMainContainer {
     overflow-x: auto;
     padding-bottom: 10px;
   }
-
   .trackOrderCard {
-    flex-wrap: nowrap;
     min-width: 700px;
-    overflow-x: auto;
-  }
-
-  .trackOrderCard::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .trackOrderCard::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .trackOrderCard {
-    min-width: 600px; /* ✅ ensure scroll instead of squeeze */
-    padding: 15px;
-  }
-
-  .trackOrderImg {
-    width: 90px;
-    height: 90px;
-  }
-
-  .trackOrderDetails p {
-    font-size: 0.9rem;
-  }
-
-  .statusLabel {
-    font-size: 11px;
-  }
-
-  .statusDate {
-    font-size: 9px;
-  }
-
-  .trackOrderButtons button {
-    padding: 8px 10px;
-    font-size: 0.85rem;
   }
 }

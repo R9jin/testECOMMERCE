@@ -8,7 +8,6 @@ import styles from "../styles/RatingOrderPage.module.css";
 export default function RatingPage() {
   const { transactionId } = useParams();
   const navigate = useNavigate();
-  // ✅ Destructure refreshOrders from context
   const { transactions, refreshOrders } = useContext(OrderHistoryContext);
   const { token } = useAuth();
 
@@ -37,29 +36,53 @@ export default function RatingPage() {
     }));
   };
 
+  const updateOrderStatusToCompleted = async (orderId) => {
+    try {
+      await fetch(`http://127.0.0.1:8000/api/orders/${orderId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: "Completed" }),
+      });
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!order) return;
+
+    const allRated = order.items.every(
+      (item) => reviews[item.product.id]?.rating > 0
+    );
+
+    if (!allRated) {
+      alert("Please rate all items before submitting.");
+      return;
+    }
 
     setSubmitting(true);
 
     try {
-      const promises = Object.keys(reviews).map(async (productId) => {
-        const reviewData = reviews[productId];
-        if (reviewData.rating > 0) {
-          return submitReview({
-            product_id: productId,
+      const promises = order.items.map((item) => {
+        const reviewData = reviews[item.product.id];
+        return submitReview(
+          {
+            product_id: item.product.id,
             rating: reviewData.rating,
-            comment: reviewData.comment
-          }, token);
-        }
+            comment: reviewData.comment || "",
+          },
+          token
+        );
       });
 
       await Promise.all(promises);
-      
-      // ✅ Refresh the order history context to get the latest data
+      await updateOrderStatusToCompleted(order.id);
       await refreshOrders();
 
-      alert("Reviews submitted successfully!");
+      alert("Reviews submitted! Order completed.");
       navigate("/order-history");
     } catch (error) {
       console.error("Failed to submit reviews:", error);
@@ -77,10 +100,10 @@ export default function RatingPage() {
       <p>Order ID: {order.id}</p>
 
       {order.items.map((item) => (
-        <div key={item.id} className={styles.ratingGroup} style={{ borderBottom: "1px solid #eee", paddingBottom: "20px" }}>
+        <div key={item.id} className={styles.ratingItem}>
           <p><strong>{item.product.name}</strong></p>
           
-          <div style={{ margin: "10px 0" }}>
+          <div className={styles.starContainer}>
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
@@ -107,10 +130,6 @@ export default function RatingPage() {
         className={styles.saveBtn} 
         onClick={handleSubmit}
         disabled={submitting}
-        style={{
-          opacity: submitting ? 0.6 : 1,
-          cursor: submitting ? "not-allowed" : "pointer"
-        }}
       >
         {submitting ? "Submitting Reviews..." : "Submit Reviews"}
       </button>

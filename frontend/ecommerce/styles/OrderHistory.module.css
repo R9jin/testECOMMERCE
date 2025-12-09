@@ -13,6 +13,21 @@
   font-size: 0.95rem;
 }
 
+.statusCompleted {
+  color: green;
+  font-weight: bold;
+}
+
+.statusDelivered {
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.statusDefault {
+  color: orange;
+  font-weight: bold;
+}
+
 .transactionTotal {
   margin-top: 0.5rem;
   font-weight: bold;
@@ -46,23 +61,19 @@
   font-size: 0.95rem;
 }
 
-.orderTable th:nth-child(1),
-.orderTable td:nth-child(1) { width: 60px; }
-.orderTable th:nth-child(2),
-.orderTable td:nth-child(2) { width: 40%; }
-.orderTable th:nth-child(3),
-.orderTable td:nth-child(3) { width: 15%; }
-.orderTable th:nth-child(4),
-.orderTable td:nth-child(4) { width: 15%; }
-.orderTable th:nth-child(5),
-.orderTable td:nth-child(5) { width: 20%; }
-
 .orderItemImg {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #ff4b2b;
+}
+
+/* Button Group Wrapper */
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .trackOrderBtn {
@@ -87,7 +98,6 @@
   background-color: #4caf50;
   color: white;
   padding: 10px 15px;
-  margin-top: 10px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -105,7 +115,6 @@
   background-color: #2196f3;
   color: white;
   padding: 10px 15px;
-  margin-top: 10px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -126,18 +135,5 @@
     width: 100%;
     padding: 12px 0;
     font-size: 1rem;
-  }
-
-  .orderContainer {
-    padding: 0.5rem;
-  }
-
-  .orderTable {
-    font-size: 0.9rem;
-    min-width: 600px;
-  }
-
-  .orderTable th, .orderTable td {
-    padding: 0.5rem;
   }
 }

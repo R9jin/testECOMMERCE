@@ -15,7 +15,7 @@ export default function OrderHistoryPage() {
     clearCart();
     items.forEach((item) => {
       addToCart({
-        id: item.product.id, // Ensure this matches your product ID field
+        id: item.product.id, 
         name: item.product.name,
         price: item.product.price, 
         image: item.product.image_url, 
@@ -25,13 +25,19 @@ export default function OrderHistoryPage() {
     navigate("/checkout");
   };
 
+  const getStatusClass = (status) => {
+    if (status === 'Completed') return styles.statusCompleted;
+    if (status === 'Delivered') return styles.statusDelivered;
+    return styles.statusDefault;
+  };
+
   return (
     <div className={styles.orderContainer}>
       <h2>Order History</h2>
       {transactions.length === 0 && <p>No orders found.</p>}
 
       {transactions.map((transaction) => {
-        const isDelivered = transaction.status === "Delivered";
+        const isFinished = transaction.status === "Delivered" || transaction.status === "Completed";
 
         return (
           <div key={transaction.id} className={styles.cartItem}>
@@ -40,7 +46,12 @@ export default function OrderHistoryPage() {
                 <p><strong>Order ID:</strong> {transaction.id}</p>
                 <p><strong>Email:</strong> {currentUser?.email}</p>
                 <p><strong>Date:</strong> {new Date(transaction.created_at).toLocaleDateString()}</p>
-                <p><strong>Status:</strong> {transaction.status}</p>
+                <p>
+                    <strong>Status: </strong> 
+                    <span className={getStatusClass(transaction.status)}>
+                        {transaction.status}
+                    </span>
+                </p>
               </div>
 
               <table className={styles.orderTable}>
@@ -57,9 +68,6 @@ export default function OrderHistoryPage() {
                   {transaction.items.map((item) => (
                     <tr key={item.id}>
                       <td>
-                        {/* Fix: Use item.product.image_url directly.
-                           Since paths are like "/assets/...", they resolve to the React public folder.
-                        */}
                         {item.product.image_url && (
                           <img
                             src={item.product.image_url} 
@@ -67,14 +75,13 @@ export default function OrderHistoryPage() {
                             className={styles.orderItemImg}
                             onError={(e) => {
                                 e.target.onerror = null; 
-                                e.target.style.display = 'none'; // Hide if missing
+                                e.target.style.display = 'none';
                             }}
                           />
                         )}
                       </td>
                       <td>{item.product.name}</td>
                       <td>{item.quantity}</td>
-                      {/* Use item.price (price at time of order) */}
                       <td>₱{Number(item.price).toFixed(2)}</td>
                       <td>₱{(Number(item.price) * item.quantity).toFixed(2)}</td>
                     </tr>
@@ -83,17 +90,26 @@ export default function OrderHistoryPage() {
               </table>
 
               <p className={styles.transactionTotal}>
-                {/* Fix: Laravel uses total_price */}
                 <strong>Total:</strong> ₱{Number(transaction.total_price).toFixed(2)}
               </p>
 
-              {isDelivered ? (
-                <button
-                  className={styles.buyAgainBtn}
-                  onClick={() => handleBuyAgain(transaction.items)}
-                >
-                  Buy Again
-                </button>
+              {isFinished ? (
+                <div className={styles.buttonGroup}>
+                    {transaction.status === 'Delivered' && (
+                        <button
+                            className={styles.rateOrderBtn}
+                            onClick={() => navigate(`/rate-order/${transaction.id}`)}
+                        >
+                            Rate Order
+                        </button>
+                    )}
+                    <button
+                        className={styles.buyAgainBtn}
+                        onClick={() => handleBuyAgain(transaction.items)}
+                    >
+                        Buy Again
+                    </button>
+                </div>
               ) : (
                 <button
                   className={styles.trackOrderBtn}
