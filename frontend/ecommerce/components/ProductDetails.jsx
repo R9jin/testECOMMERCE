@@ -1,19 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getReviews } from "../api/reviews";
 import heartIcon from "../assets/heart.png";
 import starIcon from "../assets/star.png";
 import { useAuth } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import styles from "../styles/ProductDetails.module.css";
-// Import the API
-import { getReviews } from "../api/reviews";
 
 function ProductDetails({ product }) {
   const [quantity, setQuantity] = useState(1);
   const [showNotice, setShowNotice] = useState(false);
-  
-  // New State for Reviews
+  const [isAdding, setIsAdding] = useState(false);
+
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(product.rating); // default to static rating
 
@@ -42,14 +41,29 @@ function ProductDetails({ product }) {
     }
   }, [product]);
 
-  const handleAddToCart = async () => {
+const handleAddToCart = async () => {
     if (!isLoggedIn) {
       alert("Please log in first.");
       return;
     }
-    await addToCart({ ...product, quantity });
-    setShowNotice(true);
-    setTimeout(() => setShowNotice(false), 1500);
+
+    setIsAdding(true); // 2. Start loading feedback
+
+    try {
+      // Pass the current product and the selected quantity
+      const success = await addToCart({ ...product, quantity });
+      
+      if (success) {
+        setShowNotice(true);
+        setTimeout(() => setShowNotice(false), 2000);
+      } else {
+        alert("Failed to add item to cart.");
+      }
+    } catch (error) {
+      console.error("Cart Error:", error);
+    } finally {
+      setIsAdding(false); // 3. Stop loading feedback
+    }
   };
 
   const handleToggleWishlist = async () => {

@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 
 function Navbar() {
   const [query, setQuery] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // 1. State for menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -13,7 +13,7 @@ function Navbar() {
     if (query.trim() !== "") {
       navigate(`/search?query=${encodeURIComponent(query.trim())}`);
       setQuery("");
-      setIsMenuOpen(false); // Close menu on search
+      setIsMenuOpen(false); 
     }
   };
 
@@ -25,22 +25,34 @@ function Navbar() {
     setIsMenuOpen(false);
   };
 
+  // ✅ New handler to go back
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <nav className={styles.navBar}>
       <div className={styles.navHeader}>
+        {/* ✅ Return Arrow Button */}
+        <button className={styles.backBtn} onClick={handleGoBack} aria-label="Go Back">
+          &#8592;
+        </button>
+
         <Link to="/" className={styles.siteTitle} onClick={closeMenu}>
           <strong>Food</strong>Fresh
         </Link>
 
-        {/* 2. Hamburger Button (Visible only on mobile via CSS) */}
-        <button className={styles.hamburger} onClick={toggleMenu}>
-          <span className={styles.bar}></span>
-          <span className={styles.bar}></span>
-          <span className={styles.bar}></span>
+        <button 
+          className={styles.hamburger} 
+          onClick={toggleMenu} 
+          aria-label="Toggle navigation"
+        >
+          <span className={styles.bar} style={isMenuOpen ? {transform: 'rotate(45deg) translate(5px, 6px)'} : {}}></span>
+          <span className={styles.bar} style={isMenuOpen ? {opacity: 0} : {}}></span>
+          <span className={styles.bar} style={isMenuOpen ? {transform: 'rotate(-45deg) translate(5px, -6px)'} : {}}></span>
         </button>
       </div>
 
-      {/* 3. Group Search and Menu together for easier collapsing */}
       <div className={`${styles.navLinksContainer} ${isMenuOpen ? styles.active : ""}`}>
         <form className={styles.searchContainer} onSubmit={handleSearch}>
           <input
@@ -50,8 +62,8 @@ function Navbar() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button className={styles.searchBtn} type="submit">
-            <img src={search} alt="Search" className={styles.searchImg} />
+          <button className={styles.searchBtn} type="submit" aria-label="Search">
+            <img src={search} alt="" className={styles.searchImg} />
           </button>
         </form>
 

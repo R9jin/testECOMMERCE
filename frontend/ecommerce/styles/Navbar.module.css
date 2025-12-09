@@ -1,3 +1,5 @@
+/* Navbar.module.css */
+
 * {
   box-sizing: border-box;
   font-family: "Century Gothic", "URW Gothic L", "TeX Gyre Adventor", "FreeSans", sans-serif;
@@ -7,36 +9,61 @@ body {
   margin: 0;
 }
 
-/* NAVBAR */
 .navBar {
   background-color: white;
   color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
-  padding: 0.5rem 4rem;
-  position: relative; /* Needed for absolute positioning of mobile menu if desired */
+  padding: 0.8rem 5%;
+  position: sticky;
+  top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Header area to hold Title + Hamburger */
 .navHeader {
   display: flex;
-  justify-content: space-between;
+  /* On Desktop: Items sit next to each other. On Mobile: Pushes items to edges/center. */
+  justify-content: space-between; 
   align-items: center;
-  width: auto;
+  flex-shrink: 0; 
+  gap: 1rem; /* Adds space between Back Arrow and Logo on Desktop */
 }
 
-/* Site title */
+/* ✅ Back Button Styles */
+.backBtn {
+  background: none;
+  border: none;
+  font-size: 1.8rem; /* Nice and large */
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+  line-height: 1;
+}
+
+.backBtn:hover {
+  color: #ff4b2b;
+  transform: translateX(-3px); /* Subtle animation to the left */
+}
+
 .siteTitle {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   text-decoration: none;
-  color: black;
-  font-weight: bold;
+  color: #222;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-/* Hamburger Menu (Hidden by default) */
+.siteTitle strong {
+  color: #ff4b2b;
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -47,176 +74,222 @@ body {
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 10;
+  z-index: 1001;
 }
 
 .bar {
   width: 100%;
   height: 3px;
-  background-color: black;
+  background-color: #333;
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
-/* Container for Search + Nav Links */
 .navLinksContainer {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  
-  /* 1. Allow this container to fill the empty space between Logo and Right Edge */
-  flex: 1;
-  
-  /* 2. Push items apart: Search stays Left (near logo), Links go Right */
   justify-content: space-between;
-  
-  /* 3. Add some spacing so the search bar isn't touching the logo */
-  margin-left: 10rem;
+  flex: 1;
+  gap: 1rem;
+  margin-left: 3rem;
+  transition: all 0.3s ease; /* Smooth transition when resizing */
 }
 
-/* Navigation list */
+/* SEARCH BAR CONTAINER */
+.searchContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1; 
+  /* ✅ Updated: Base max-width reduced, min-width allows shrinking */
+  max-width: 400px;
+  min-width: 150px; 
+}
+
+.searchBar {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 50px;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.searchBar:focus {
+  background-color: white;
+  border-color: #ff4b2b;
+  box-shadow: 0 0 0 3px rgba(255, 75, 43, 0.1);
+}
+
+.searchBtn {
+  position: absolute;
+  right: 5px;
+  border: none;
+  background: #ff4b2b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.searchBtn:hover {
+  transform: scale(1.05);
+  background-color: #e03e1f;
+}
+
+.searchImg {
+  width: 14px;
+  height: 14px;
+  filter: invert(1);
+}
+
 .navList {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  padding: 0.25rem;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.navItemActive {
-  color: #ff4b2b;
-}
-
-.navItemActive .navLink {
-  color: #ff4b2b; /* Fixed: target child link for color */
-  font-weight: bold;
-}
-
-.navItem:hover {
-  background-color: #ff4b2b;
-  color: white;
-}
-
-.navItem:hover .navLink {
-  color: white;
+  position: relative;
 }
 
 .navLink {
-  color: inherit;
+  color: #555;
   text-decoration: none;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
 }
 
-/* Search bar */
-.searchContainer {
-  display: flex;
-  align-items: center;
+.navItemActive .navLink {
+  color: #ff4b2b;
 }
 
-.searchBar {
-  padding: 0.3rem 0.5rem;
-  font-size: 1rem;
-  border-radius: 50px;
-  border: 1px solid #ccc;
-  background-color: lightgray;
-  outline: none;
-  width: 400px; /* Reduced slightly for better fit */
+.navLink:hover {
+  color: #ff4b2b;
 }
 
-.searchBtn {
-  border: none;
-  background: none;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  outline: none;
-  color: inherit;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
+/* =========================================
+   RESPONSIVE BREAKPOINTS 
+   ========================================= */
 
-.searchBtn:hover {
-  background-color: #ff4b2b;
-  color: white;
-}
-
-.searchImg {
-  width: 20px;
-  height: 20px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
+/* ✅ INTERMEDIATE (Laptop / Half-Screen)
+   This handles widths between mobile and full desktop.
+   It creates the "shorter" search bar effect.
+*/
+@media (min-width: 769px) and (max-width: 1200px) {
   .navBar {
-    padding: 0.5rem 2rem;
+    padding: 0.8rem 2%; /* Reduce side padding */
   }
-  .searchBar {
-    width: 250px;
+
+  .navLinksContainer {
+    margin-left: 1.5rem; /* Bring search closer to logo */
+    gap: 0.8rem;
+  }
+
+  .searchContainer {
+    max-width: 220px; /* ✅ Force search bar shorter here */
+  }
+
+  .navList {
+    gap: 0.8rem; /* Tighten links */
+  }
+  
+  .navLink {
+    font-size: 0.9rem; /* Slightly smaller text if needed */
+    padding: 0.3rem;
   }
 }
 
-/* MOBILE VIEW */
+/* MOBILE (< 768px) */
 @media (max-width: 768px) {
   .navBar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
   }
 
   .navHeader {
     width: 100%;
+    /* On mobile, distribute items: Back (left), Logo (center/left), Hamburger (right) */
+    justify-content: space-between; 
   }
 
   .hamburger {
-    display: flex; /* Show hamburger */
+    display: flex;
   }
 
   .navLinksContainer {
-    display: none; /* Hide menu by default */
+    display: none;
     flex-direction: column;
     width: 100%;
-    margin-top: 1rem;
+    margin: 0;
+    padding-top: 1rem;
     gap: 1rem;
+    border-top: 1px solid #eee;
+    margin-top: 1rem;
+    animation: slideDown 0.3s ease forwards;
   }
 
   .navLinksContainer.active {
-    display: flex; /* Show when active */
+    display: flex;
   }
 
   .searchContainer {
     width: 100%;
-    margin: 0;
+    max-width: 100%;
   }
 
   .searchBar {
     width: 100%;
+    font-size: 16px;
   }
 
   .navList {
     flex-direction: column;
     width: 100%;
-    gap: 0;
+    gap: 0.5rem;
+    text-align: center;
   }
 
   .navItem {
     width: 100%;
-    padding: 0;
+    justify-content: center;
   }
 
   .navLink {
     width: 100%;
-    padding: 1rem;
-    justify-content: center; /* Center text on mobile */
+    padding: 0.8rem;
+    display: block;
+    background-color: #fafafa;
+    border-radius: 8px;
   }
+
+  .navLink:hover {
+    background-color: #ffeeeb;
+  }
+}
+
+@media (max-width: 400px) {
+  .siteTitle {
+    font-size: 1.4rem;
+  }
+  
+  .navBar {
+    padding: 0.8rem 1rem;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
