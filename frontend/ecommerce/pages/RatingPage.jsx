@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext";
 import { OrderHistoryContext } from "../context/OrderHistoryContext";
 import styles from "../styles/RatingOrderPage.module.css";
 
+const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 export default function RatingPage() {
   const { transactionId } = useParams();
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ export default function RatingPage() {
 
   const updateOrderStatusToCompleted = async (orderId) => {
     try {
-      await fetch(`http://127.0.0.1:8000/api/orders/${orderId}`, {
+      await fetch(`${API_BASE_URL}/orders/${orderId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -54,6 +56,7 @@ export default function RatingPage() {
   const handleSubmit = async () => {
     if (!order) return;
 
+    // ✅ FIX: Ensure ALL products have a rating > 0 before proceeding
     const allRated = order.items.every(
       (item) => reviews[item.product.id]?.rating > 0
     );
@@ -66,6 +69,7 @@ export default function RatingPage() {
     setSubmitting(true);
 
     try {
+      // 1. Submit all reviews
       const promises = order.items.map((item) => {
         const reviewData = reviews[item.product.id];
         return submitReview(
@@ -78,8 +82,13 @@ export default function RatingPage() {
         );
       });
 
+      // Wait for all reviews to be submitted successfully
       await Promise.all(promises);
+
+      // 2. ✅ Update Order Status to "Completed" on Backend only after ratings are done
       await updateOrderStatusToCompleted(order.id);
+
+      // 3. Refresh Context
       await refreshOrders();
 
       alert("Reviews submitted! Order completed.");

@@ -14,13 +14,16 @@ export default function OrderHistoryPage() {
   const handleBuyAgain = (items) => {
     clearCart();
     items.forEach((item) => {
-      addToCart({
-        id: item.product.id, 
-        name: item.product.name,
-        price: item.product.price, 
-        image: item.product.image_url, 
-        quantity: item.quantity,
-      });
+      // ✅ FIX: Added check for item.product safety
+      if (item.product) {
+        addToCart({
+          id: item.product.id, 
+          name: item.product.name,
+          price: item.product.price, 
+          image: item.product.image_url, 
+          quantity: item.quantity,
+        });
+      }
     });
     navigate("/checkout");
   };
@@ -95,6 +98,7 @@ export default function OrderHistoryPage() {
 
               {isFinished ? (
                 <div className={styles.buttonGroup}>
+                    {/* Only show Rate button if delivered but not yet fully completed/rated */}
                     {transaction.status === 'Delivered' && (
                         <button
                             className={styles.rateOrderBtn}

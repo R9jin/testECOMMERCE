@@ -2,18 +2,23 @@ import { useState } from "react";
 import styles from "../styles/WishlistCard.module.css";
 
 function WishlistCard({ product, onRemove, onAddCart, onBuyNow }) {
-  // 1. Add state for visual feedback
   const [isAdded, setIsAdded] = useState(false);
+  const [isAdding, setIsAdding] = useState(false); // ✅ Track loading state
 
   const imageSrc = product.image_url?.startsWith("http")
     ? product.image_url
     : process.env.PUBLIC_URL + product.image_url;
 
-  // 2. Handle click: call parent function + show feedback
-  const handleAddToCart = () => {
-    onAddCart(product);
-    setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 2000); // Revert after 2 seconds
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    // ✅ Wait for the parent's API call to finish
+    const success = await onAddCart(product);
+    setIsAdding(false);
+
+    if (success) {
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000); // Revert after 2 seconds
+    }
   };
 
   return (
@@ -28,16 +33,16 @@ function WishlistCard({ product, onRemove, onAddCart, onBuyNow }) {
         <p>{product.sold ?? 0} sold</p>
       </div>
 
-      <div className={styles.wishlistPrice}>₱{product.price}</div>
+      <div className={styles.wishlistPrice}>₱{Number(product.price).toFixed(2)}</div>
 
       <div className={styles.wishlistActions}>
-        {/* 3. Update Button with conditional styling and text */}
         <button 
           className={`${styles.addCart} ${isAdded ? styles.added : ""}`} 
           onClick={handleAddToCart}
-          disabled={isAdded}
+          disabled={isAdded || isAdding} // ✅ Disable to prevent double clicks
+          style={{ opacity: isAdding ? 0.7 : 1, cursor: (isAdded || isAdding) ? 'default' : 'pointer' }}
         >
-          {isAdded ? "Added!" : "Add to Cart"}
+          {isAdding ? "Adding..." : (isAdded ? "Added!" : "Add to Cart")}
         </button>
 
         <button className={styles.buyNow} onClick={() => onBuyNow(product)}>

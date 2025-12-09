@@ -5,9 +5,10 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import styles from "../styles/WishlistPage.module.css";
 
+const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 export default function WishListPage() {
   const { addToCart } = useContext(CartContext);
-  // wishlistItems is now an array of strings like ['AP001', 'MC002']
   const { wishlistItems, removeFromWishlist } = useContext(WishlistContext);
   const [allProducts, setAllProducts] = useState([]);
   const navigate = useNavigate();
@@ -15,10 +16,9 @@ export default function WishListPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch all products so we can filter them locally against the wishlist IDs
-        const res = await fetch("http://127.0.0.1:8000/api/products");
+        // Fetch all products to match against wishlist IDs
+        const res = await fetch(`${API_BASE_URL}/products`);
         const data = await res.json();
-        // Check if data.data exists (Laravel resource response) or just data
         setAllProducts(data.data || data);
       } catch (err) {
         console.error("Failed to fetch products:", err);
@@ -28,18 +28,23 @@ export default function WishListPage() {
     fetchProducts();
   }, []);
 
-  // ✅ FIX: Use .includes() because wishlistItems is an array of IDs (strings)
   const wishlistProducts = allProducts.filter(p =>
     wishlistItems.includes(String(p.product_id))
   );
 
-  const handleAddCart = (product) => {
-    addToCart({ ...product, quantity: 1 });
+  // ✅ Updated to be async and return the result
+  const handleAddCart = async (product) => {
+    return await addToCart({ ...product, quantity: 1 });
   };
 
-  const handleBuyNow = (product) => {
-    addToCart({ ...product, quantity: 1 });
-    navigate("/checkout");
+  // ✅ Updated to wait for cart addition before navigating
+  const handleBuyNow = async (product) => {
+    const success = await addToCart({ ...product, quantity: 1 });
+    if (success) {
+      navigate("/checkout");
+    } else {
+      alert("Failed to add item to cart.");
+    }
   };
 
   return (
@@ -54,7 +59,7 @@ export default function WishListPage() {
               key={product.product_id}
               product={product}
               onRemove={() => removeFromWishlist(product.product_id)}
-              onAddCart={() => handleAddCart(product)}
+              onAddCart={() => handleAddCart(product)} // Pass async function
               onBuyNow={() => handleBuyNow(product)}
             />
           ))

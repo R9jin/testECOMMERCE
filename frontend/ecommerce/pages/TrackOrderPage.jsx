@@ -5,6 +5,7 @@ import { CartContext } from "../context/CartContext";
 import { OrderHistoryContext } from "../context/OrderHistoryContext";
 import styles from "../styles/TrackOrderPage.module.css";
 
+const API_BASE_URL = "http://127.0.0.1:8000/api";
 const statuses = ["Ordered", "Payment", "Confirmation", "Delivery"];
 
 export default function TrackOrderPage() {
@@ -20,7 +21,7 @@ export default function TrackOrderPage() {
 
   const handleDeliveryCompletion = async (id) => {
     try {
-      await fetch(`http://127.0.0.1:8000/api/orders/${id}`, {
+      await fetch(`${API_BASE_URL}/orders/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -57,15 +58,19 @@ export default function TrackOrderPage() {
       setCurrentStatusIndex((prev) => {
         if (prev < statuses.length - 1) {
           const next = prev + 1;
+          
           localStorage.setItem(
             `track_${order.id}`,
             JSON.stringify({ statusIndex: next })
           );
+
           if (next === statuses.length - 1) {
             handleDeliveryCompletion(order.id);
           }
+
           return next;
         }
+        
         clearInterval(interval);
         return prev;
       });
@@ -77,13 +82,16 @@ export default function TrackOrderPage() {
   const handleBuyAgain = () => {
     clearCart();
     order.items.forEach((item) => {
-      addToCart({
-        id: item.product.id,
-        name: item.product.name,
-        price: item.price,
-        image: item.product.image_url,
-        quantity: item.quantity,
-      });
+      // ✅ FIX: Added check to ensure product exists
+      if (item.product) {
+        addToCart({
+          id: item.product.id,
+          name: item.product.name,
+          price: item.product.price, // ✅ FIX: Use current product price, not order price
+          image: item.product.image_url,
+          quantity: item.quantity,
+        });
+      }
     });
     navigate("/checkout");
   };
@@ -92,8 +100,6 @@ export default function TrackOrderPage() {
 
   return (
     <div className={styles.trackOrderMainContainer}>
-      
-      {/* 1. Order Items List */}
       <div className={styles.orderItemsCard}>
         <h3>Order #{order.id} Items</h3>
         {order.items.map((item) => (
@@ -114,7 +120,6 @@ export default function TrackOrderPage() {
         </p>
       </div>
 
-      {/* 2. Tracking Card */}
       <div className={styles.trackOrderCard}>
         <div className={styles.trackOrderStatus}>
           {statuses.map((status, index) => (
