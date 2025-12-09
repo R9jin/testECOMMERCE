@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login as loginAPI, register } from "../api/auth";
 import signInBanner from "../assets/signInBanner.png";
-import styles from "../styles/SignUpPage.module.css";
-import { register, login as loginAPI } from "../api/auth"; // auth.js
 import { useAuth } from "../context/AuthContext";
+import styles from "../styles/SignUpPage.module.css";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -16,12 +16,14 @@ function SignUpPage() {
   });
 
   const [agree, setAgree] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ Added loading state
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
+      // Allow only numbers and max 11 chars
       if (!/^\d*$/.test(value)) return;
       if (value.length > 11) return;
     }
@@ -41,15 +43,19 @@ function SignUpPage() {
       return;
     }
 
+    setLoading(true); // ✅ Start loading
+
     try {
-      // Register the user via API
+      // 1. Register the user
       const registerResponse = await register(formData);
+      
       if (registerResponse.error) {
         alert(registerResponse.error || "Failed to register. Try again.");
+        setLoading(false); // Stop loading on error
         return;
       }
 
-      // Automatically log in the newly registered user
+      // 2. Automatically log in the user
       const loginResponse = await loginAPI({
         email: formData.email,
         password: formData.password,
@@ -57,17 +63,21 @@ function SignUpPage() {
 
       if (loginResponse.error) {
         alert(loginResponse.error || "Login failed after registration.");
+        setLoading(false);
         return;
       }
 
-      // Update AuthContext with the logged-in user and token
+      // 3. Update Global Auth Context
       login({ user: loginResponse.user, token: loginResponse.token });
 
       alert(`Account created successfully! Welcome, ${loginResponse.user.name}.`);
       navigate("/home", { replace: true });
+      
     } catch (err) {
       console.error(err);
-      alert("Registration failed. Please try again later.");
+      alert("Registration failed. Please check your connection.");
+    } finally {
+      setLoading(false); // ✅ Ensure loading stops
     }
   };
 
@@ -120,7 +130,7 @@ function SignUpPage() {
           />
 
           <label>Gender</label>
-          <select name="gender" value={formData.gender} onChange={handleChange}>
+          <select name="gender" value={formData.gender} onChange={handleChange} required>
             <option value="">Select gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -150,6 +160,7 @@ function SignUpPage() {
             type="submit"
             className={styles.signupBtn}
             disabled={
+              loading || // ✅ Disable while loading
               !formData.name ||
               !formData.email ||
               !formData.password ||
@@ -158,8 +169,12 @@ function SignUpPage() {
               !formData.dob ||
               !agree
             }
+            style={{ 
+              opacity: loading ? 0.7 : 1, 
+              cursor: loading ? 'not-allowed' : 'pointer' 
+            }}
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
 
