@@ -8,12 +8,13 @@ import styles from "../styles/RatingOrderPage.module.css";
 export default function RatingPage() {
   const { transactionId } = useParams();
   const navigate = useNavigate();
-  const { transactions } = useContext(OrderHistoryContext);
+  // ✅ Destructure refreshOrders from context
+  const { transactions, refreshOrders } = useContext(OrderHistoryContext);
   const { token } = useAuth();
 
   const [order, setOrder] = useState(null);
-  // Store ratings for each product: { [productId]: { rating: 5, comment: "" } }
   const [reviews, setReviews] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (transactions.length > 0) {
@@ -39,21 +40,33 @@ export default function RatingPage() {
   const handleSubmit = async () => {
     if (!order) return;
 
-    // Loop through the state and submit reviews for items that have a rating
-    const promises = Object.keys(reviews).map(async (productId) => {
-      const reviewData = reviews[productId];
-      if (reviewData.rating > 0) {
-        return submitReview({
-          product_id: productId, // passing the numeric ID from the item
-          rating: reviewData.rating,
-          comment: reviewData.comment
-        }, token);
-      }
-    });
+    setSubmitting(true);
 
-    await Promise.all(promises);
-    alert("Reviews submitted successfully!");
-    navigate("/order-history");
+    try {
+      const promises = Object.keys(reviews).map(async (productId) => {
+        const reviewData = reviews[productId];
+        if (reviewData.rating > 0) {
+          return submitReview({
+            product_id: productId,
+            rating: reviewData.rating,
+            comment: reviewData.comment
+          }, token);
+        }
+      });
+
+      await Promise.all(promises);
+      
+      // ✅ Refresh the order history context to get the latest data
+      await refreshOrders();
+
+      alert("Reviews submitted successfully!");
+      navigate("/order-history");
+    } catch (error) {
+      console.error("Failed to submit reviews:", error);
+      alert("An error occurred while submitting your reviews.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!order) return <p className={styles.trackOrderMainContainer}>Loading order...</p>;
@@ -90,8 +103,16 @@ export default function RatingPage() {
         </div>
       ))}
 
-      <button className={styles.saveBtn} onClick={handleSubmit}>
-        Submit Reviews
+      <button 
+        className={styles.saveBtn} 
+        onClick={handleSubmit}
+        disabled={submitting}
+        style={{
+          opacity: submitting ? 0.6 : 1,
+          cursor: submitting ? "not-allowed" : "pointer"
+        }}
+      >
+        {submitting ? "Submitting Reviews..." : "Submit Reviews"}
       </button>
     </div>
   );

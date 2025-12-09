@@ -8,7 +8,6 @@ import styles from "../styles/TrackOrderPage.module.css";
 const statuses = ["Ordered", "Payment", "Confirmation", "Delivery"];
 
 export default function TrackOrderPage() {
-  // ✅ Get refreshOrders from context
   const { transactions, refreshOrders } = useContext(OrderHistoryContext);
   const { addToCart, clearCart } = useContext(CartContext);
   const { token } = useAuth();
@@ -71,7 +70,7 @@ export default function TrackOrderPage() {
             JSON.stringify({ statusIndex: next })
           );
 
-          // ✅ Check if this is the final step
+          // ✅ Check if this is the final step and update Order State
           if (next === statuses.length - 1) {
             handleDeliveryCompletion(order.id);
           }
@@ -87,71 +86,97 @@ export default function TrackOrderPage() {
     return () => clearInterval(interval);
   }, [order, isCancelled, currentStatusIndex, token]);
 
+  const handleBuyAgain = () => {
+    clearCart();
+    order.items.forEach((item) => {
+      addToCart({
+        id: item.product.id,
+        name: item.product.name,
+        price: item.price,
+        image: item.product.image_url,
+        quantity: item.quantity,
+      });
+    });
+    navigate("/checkout");
+  };
+
   if (!order) return <p>Order not found.</p>;
 
   return (
     <div className={styles.trackOrderMainContainer}>
-      {/* ... (Keep your existing UI JSX same as before) ... */}
-      {order.items.map((item) => (
-        <div key={item.id} className={styles.trackOrderCard}>
-          <img
-            src={item.product?.image_url || item.image || "/placeholder.png"} 
-            alt={item.name}
-            className={styles.trackOrderImg}
-          />
-          <div className={styles.trackOrderDetails}>
-            <p>{item.product?.name || item.name}</p>
-            <p>₱{Number(item.price).toFixed(2)}</p>
-            <p>Qty: {item.quantity}</p>
+      
+      {/* ✅ 1. Order Items List (Displayed once) */}
+      <div style={{ background: '#fff', padding: '20px', borderRadius: '12px', marginBottom: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+        <h3 style={{marginTop: 0, color: '#333'}}>Order #{order.id} Items</h3>
+        {order.items.map((item) => (
+          <div key={item.id} style={{ display: 'flex', gap: '20px', marginBottom: '15px', alignItems: 'center', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+            <img
+              src={item.product?.image_url || item.image || "/placeholder.png"} 
+              alt={item.name}
+              style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '6px' }}
+            />
+            <div>
+              <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{item.product?.name || item.name}</p>
+              <p style={{ margin: 0, color: '#666' }}>₱{Number(item.price).toFixed(2)} x {item.quantity}</p>
+            </div>
           </div>
+        ))}
+        <p style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.1rem', marginTop: '10px' }}>
+            Total: ₱{Number(order.total_price).toFixed(2)}
+        </p>
+      </div>
 
-          <div className={styles.trackOrderStatus}>
-            {statuses.map((status, index) => (
-              <div key={index} className={styles.statusStepContainer}>
-                <div
-                  className={`${styles.statusStep} ${
-                    index <= currentStatusIndex ? styles.active : ""
-                  }`}
-                />
-                <span
-                  className={`${styles.statusLabel} ${
-                    index <= currentStatusIndex ? styles.active : ""
-                  }`}
-                >
-                  {status}
-                </span>
-              </div>
-            ))}
-            {isCancelled && <p className={styles.cancelledText}>Order Cancelled</p>}
-          </div>
-
-          <div className={styles.trackOrderButtons}>
-            {currentStatusIndex === statuses.length - 1 && !isCancelled ? (
-              <>
-                <button
-                  className={styles.rateOrderBtn}
-                  onClick={() => navigate(`/rate-order/${order.id}`)}
-                >
-                  Rate Your Order
-                </button>
-                <button onClick={() => navigate('/checkout')}>Buy Again</button>
-              </>
-            ) : (
-              <>
-                <button disabled className={styles.trackingBtn}>
-                  Tracking...
-                </button>
-                <button
-                  className={styles.cancelBtn}
-                  onClick={() => setIsCancelled(true)}
-                >
-                  Cancel Order
-                </button>
-              </>
-            )}
-          </div>
+      {/* ✅ 2. Single Tracking Card for the Whole Order */}
+      <div className={styles.trackOrderCard}>
+        {/* Status Bar */}
+        <div className={styles.trackOrderStatus}>
+          {statuses.map((status, index) => (
+            <div key={index} className={styles.statusStepContainer}>
+              <div
+                className={`${styles.statusStep} ${
+                  index <= currentStatusIndex ? styles.active : ""
+                }`}
+              />
+              <span
+                className={`${styles.statusLabel} ${
+                  index <= currentStatusIndex ? styles.active : ""
+                }`}
+              >
+                {status}
+              </span>
+            </div>
+          ))}
+          {isCancelled && <p className={styles.cancelledText}>Order Cancelled</p>}
         </div>
-      ))}
+
+        {/* Unified Buttons */}
+        <div className={styles.trackOrderButtons}>
+          {currentStatusIndex === statuses.length - 1 && !isCancelled ? (
+            <>
+              {/* ✅ Single Rate Button for the whole order */}
+              <button
+                className={styles.rateOrderBtn}
+                onClick={() => navigate(`/rate-order/${order.id}`)}
+              >
+                Rate Your Order
+              </button>
+              <button onClick={handleBuyAgain}>Buy Again</button>
+            </>
+          ) : (
+            <>
+              <button disabled className={styles.trackingBtn}>
+                Tracking...
+              </button>
+              <button
+                className={styles.cancelBtn}
+                onClick={() => setIsCancelled(true)}
+              >
+                Cancel Order
+              </button>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

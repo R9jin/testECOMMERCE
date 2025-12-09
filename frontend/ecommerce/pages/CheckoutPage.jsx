@@ -217,9 +217,15 @@ export default function CheckoutPage() {
             <button
               className={styles.placeOrder}
               onClick={placeOrder}
-              disabled={!currentUser}
+              disabled={!currentUser || loading} // Disable if not logged in OR loading
+              style={{
+                opacity: loading ? 0.6 : 1, // Fade button when loading
+                cursor: loading ? "not-allowed" : "pointer"
+              }}
             >
-              {currentUser ? "Place Order" : "Login to Place Order"}
+              {loading 
+                ? "Placing Order..." 
+                : (currentUser ? "Place Order" : "Login to Place Order")}
             </button>
           </>
         )}
