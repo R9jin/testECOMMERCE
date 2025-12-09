@@ -145,6 +145,7 @@ function ProfilePage() {
             name="name"
             value={editableUser.name || ""}
             onChange={handleChange}
+            className={styles.formInput}
           />
 
           <label>Phone Number</label>
@@ -152,6 +153,7 @@ function ProfilePage() {
             name="phone"
             value={editableUser.phone || ""}
             onChange={handleChange}
+            className={styles.formInput}
           />
 
           <label>Gender</label>
@@ -159,6 +161,7 @@ function ProfilePage() {
             name="gender"
             value={editableUser.gender || ""}
             onChange={handleChange}
+            className={styles.formInput}
           >
             <option value="">Select</option>
             <option value="Male">Male</option>
@@ -173,6 +176,7 @@ function ProfilePage() {
             name="dob"
             value={editableUser.dob || ""}
             onChange={handleChange}
+            className={styles.formInput}
           />
 
           {/* 7. Button Feedback Implementation */}

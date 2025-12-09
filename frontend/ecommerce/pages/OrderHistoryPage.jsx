@@ -1,44 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { OrderHistoryContext } from "../context/OrderHistoryContext";
+import { useAuth } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
+import { OrderHistoryContext } from "../context/OrderHistoryContext";
 import styles from "../styles/OrderHistory.module.css";
 
-/**
- * OrderHistoryPage Component - fetches from API
- */
 export default function OrderHistoryPage() {
-  const { transactions, addTransaction } = useContext(OrderHistoryContext);
+  const { transactions } = useContext(OrderHistoryContext);
   const { addToCart, clearCart } = useContext(CartContext);
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
-  const [statusesMap, setStatusesMap] = useState({});
-
-  const statuses = ["Ordered", "Payment", "Confirmation", "Delivery"];
-
-  useEffect(() => {
-    // Map each transaction to its current status (default 0)
-    const map = {};
-    transactions.forEach((t) => {
-      map[t.id] = t.statusIndex || 0; // assume Laravel API returns statusIndex
-    });
-    setStatusesMap(map);
-  }, [transactions]);
 
   const handleBuyAgain = (items) => {
     clearCart();
     items.forEach((item) => {
       addToCart({
-        id: item.product.id,
+        id: item.product.id, // Ensure this matches your product ID field
         name: item.product.name,
-        price: item.price,
-        image: item.product.image,
+        price: item.product.price, 
+        image: item.product.image_url, 
         quantity: item.quantity,
       });
     });
     navigate("/checkout");
   };
-
-  const getSafePrice = (item) => item.price ?? 0;
 
   return (
     <div className={styles.orderContainer}>
@@ -46,16 +31,16 @@ export default function OrderHistoryPage() {
       {transactions.length === 0 && <p>No orders found.</p>}
 
       {transactions.map((transaction) => {
-        const statusIndex = statusesMap[transaction.id] || 0;
-        const isDelivered = statusIndex === statuses.length - 1;
+        const isDelivered = transaction.status === "Delivered";
 
         return (
           <div key={transaction.id} className={styles.cartItem}>
             <div className={styles.cartInfo}>
               <div className={styles.transactionInfo}>
-                <p><strong>Transaction ID:</strong> {transaction.id}</p>
-                <p><strong>Email:</strong> {transaction.user.email}</p>
+                <p><strong>Order ID:</strong> {transaction.id}</p>
+                <p><strong>Email:</strong> {currentUser?.email}</p>
                 <p><strong>Date:</strong> {new Date(transaction.created_at).toLocaleDateString()}</p>
+                <p><strong>Status:</strong> {transaction.status}</p>
               </div>
 
               <table className={styles.orderTable}>
@@ -70,27 +55,36 @@ export default function OrderHistoryPage() {
                 </thead>
                 <tbody>
                   {transaction.items.map((item) => (
-                    <tr key={item.product.id}>
+                    <tr key={item.id}>
                       <td>
-                        {item.product.image && (
+                        {/* Fix: Use item.product.image_url directly.
+                           Since paths are like "/assets/...", they resolve to the React public folder.
+                        */}
+                        {item.product.image_url && (
                           <img
-                            src={item.product.image}
+                            src={item.product.image_url} 
                             alt={item.product.name}
                             className={styles.orderItemImg}
+                            onError={(e) => {
+                                e.target.onerror = null; 
+                                e.target.style.display = 'none'; // Hide if missing
+                            }}
                           />
                         )}
                       </td>
                       <td>{item.product.name}</td>
                       <td>{item.quantity}</td>
-                      <td>₱{getSafePrice(item).toFixed(2)}</td>
-                      <td>₱{(getSafePrice(item) * item.quantity).toFixed(2)}</td>
+                      {/* Use item.price (price at time of order) */}
+                      <td>₱{Number(item.price).toFixed(2)}</td>
+                      <td>₱{(Number(item.price) * item.quantity).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
 
               <p className={styles.transactionTotal}>
-                <strong>Total:</strong> ₱{transaction.total.toFixed(2)}
+                {/* Fix: Laravel uses total_price */}
+                <strong>Total:</strong> ₱{Number(transaction.total_price).toFixed(2)}
               </p>
 
               {isDelivered ? (

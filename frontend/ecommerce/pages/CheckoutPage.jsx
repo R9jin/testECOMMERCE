@@ -1,9 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createOrder } from "../api/orders"; // Import API function
+import { useAuth } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
-import { OrderHistoryContext } from "../context/OrderHistoryContext"; 
+import { OrderHistoryContext } from "../context/OrderHistoryContext";
 import { ProductsContext } from "../context/ProductsContext";
-import { useAuth } from "../context/AuthContext"; 
 import styles from "../styles/CheckoutPage.module.css";
 
 /**
@@ -11,9 +12,11 @@ import styles from "../styles/CheckoutPage.module.css";
  */
 export default function CheckoutPage() {
   const { cartItems, clearCart } = useContext(CartContext);
-  const { addTransaction } = useContext(OrderHistoryContext);
   const { products } = useContext(ProductsContext);
-  const { currentUser } = useAuth(); 
+
+  const { refreshOrders } = useContext(OrderHistoryContext);
+  
+  const { currentUser, token } = useAuth();
   const navigate = useNavigate();
 
   const [billing, setBilling] = useState({
@@ -28,6 +31,7 @@ export default function CheckoutPage() {
 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [eWalletType, setEWalletType] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   useEffect(() => {
     if (currentUser) {
@@ -35,7 +39,6 @@ export default function CheckoutPage() {
     }
   }, [currentUser]);
 
-  // Get product info from context instead of static JSON
   const getProduct = (id) => products.find((p) => p.id === id);
 
   const subtotal = cartItems.reduce((total, item) => {
@@ -47,42 +50,41 @@ export default function CheckoutPage() {
     setBilling({ ...billing, [e.target.name]: e.target.value });
   };
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     if (!currentUser) return alert("Login first!");
     if (!paymentMethod) return alert("Select payment method!");
     if (paymentMethod === "E-Wallet" && !eWalletType)
       return alert("Please choose an e-wallet type.");
-    if (!billing.firstName || !billing.lastName)
+    if (!billing.firstName || !billing.lastName || !billing.address)
       return alert("Please fill out your billing information.");
 
-    const newTransaction = {
-      transactionId: Date.now(),
-      user: currentUser.email,
-      items: cartItems.map((item) => {
-        const product = getProduct(item.id);
-        return {
-          id: item.id,
-          name: product?.name,
-          quantity: item.quantity,
-          price: product?.price,
-        };
-      }),
-      total: subtotal,
-      date: new Date().toISOString().split("T")[0],
-      paymentMethod,
-      eWalletType: paymentMethod === "E-Wallet" ? eWalletType : null,
-      address: billing.address,
-    };
+    setLoading(true);
 
-    addTransaction(newTransaction); 
+    try {
+      // Prepare payload (backend primarily uses cart data from DB, but we pass billing info if needed later)
+      const orderPayload = {
+        address: billing.address,
+        payment_method: paymentMethod,
+        notes: billing.notes
+      };
 
-    const key = `transactions_${currentUser.email}`;
-    const existing = JSON.parse(localStorage.getItem(key)) || [];
-    localStorage.setItem(key, JSON.stringify([...existing, newTransaction]));
+      // Call Laravel API
+      const response = await createOrder(orderPayload, token);
 
-    clearCart();
-    alert("Order placed successfully!");
-    navigate("/order-history");
+      if (response.success || response.id) { // Check for success flag or order ID
+        alert("Order placed successfully!");
+        clearCart(); // Clear frontend cart context
+        await refreshOrders();
+        navigate("/order-history");
+      } else {
+        alert("Order failed: " + (response.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Order error:", error);
+      alert("Failed to place order. Please check your connection.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

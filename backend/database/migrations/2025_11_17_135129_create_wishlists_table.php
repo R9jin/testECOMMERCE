@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('wishlists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            
-            // Change from numeric foreignId to string that references product_id in products
             $table->string('product_id');
             $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
 
             $table->timestamps();
 
-            $table->unique(['user_id', 'product_id']); // Prevent duplicates
+            $table->unique(['user_id', 'product_id']);
         });
     }
 

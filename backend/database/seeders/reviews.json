@@ -1,0 +1,152 @@
+[
+    {
+        "product_code": "AP001",
+        "user_email": "username@gmail.com",
+        "rating": 5,
+        "comment": "The best Chicken Inasal I've tasted! The marinade is perfect."
+    },
+    {
+        "product_code": "AP001",
+        "user_email": "foodie1@gmail.com",
+        "rating": 4,
+        "comment": "Very tasty, but I wish the serving size was a bit bigger."
+    },
+    {
+        "product_code": "AP002",
+        "user_email": "spicymaster@gmail.com",
+        "rating": 5,
+        "comment": "Perfect amount of spice! The cheese balances the chili perfectly."
+    },
+    {
+        "product_code": "AP002",
+        "user_email": "admin@gmail.com",
+        "rating": 3,
+        "comment": "Good crunch, but a bit too oily for my liking."
+    },
+    {
+        "product_code": "AP003",
+        "user_email": "user2@gmail.com",
+        "rating": 5,
+        "comment": "Classic! Reminds me of home cooking. Will order again."
+    },
+    {
+        "product_code": "MC001",
+        "user_email": "username@gmail.com",
+        "rating": 5,
+        "comment": "The Adobo sauce is rich and flavorful. Chicken is fall-off-the-bone tender."
+    },
+    {
+        "product_code": "MC001",
+        "user_email": "traveler@gmail.com",
+        "rating": 4,
+        "comment": "Authentic taste. Pairs perfectly with garlic rice."
+    },
+    {
+        "product_code": "MC002",
+        "user_email": "peanutlover@gmail.com",
+        "rating": 5,
+        "comment": "The Kare-Kare sauce is thick and nutty. The bagoong on the side is a must!"
+    },
+    {
+        "product_code": "MC002",
+        "user_email": "admin@gmail.com",
+        "rating": 5,
+        "comment": "High quality oxtail and veggies. Very satisfied."
+    },
+    {
+        "product_code": "MC003",
+        "user_email": "crispyskin@gmail.com",
+        "rating": 4,
+        "comment": "Lechon skin was crispy, but the meat was slightly dry in some parts."
+    },
+    {
+        "product_code": "MC003",
+        "user_email": "fiesta@gmail.com",
+        "rating": 5,
+        "comment": "Showstopper! Everyone at the party loved it."
+    },
+    {
+        "product_code": "MC004",
+        "user_email": "noodlefan@gmail.com",
+        "rating": 3,
+        "comment": "It was okay, a bit salty for me."
+    },
+    {
+        "product_code": "MC005",
+        "user_email": "sourtooth@gmail.com",
+        "rating": 5,
+        "comment": "Perfect sourness! The pork belly melts in your mouth."
+    },
+    {
+        "product_code": "DS001",
+        "user_email": "username@gmail.com",
+        "rating": 4,
+        "comment": "Soft and fluffy Bibingka. Love the salted egg topping."
+    },
+    {
+        "product_code": "DS002",
+        "user_email": "summerlover@gmail.com",
+        "rating": 5,
+        "comment": "Best Halo-Halo in town! Generous with ingredients."
+    },
+    {
+        "product_code": "DS002",
+        "user_email": "icequeen@gmail.com",
+        "rating": 5,
+        "comment": "Perfect for the hot weather. The ube ice cream is superb."
+    },
+    {
+        "product_code": "DS003",
+        "user_email": "sweettooth@gmail.com",
+        "rating": 5,
+        "comment": "Creamiest Leche Flan ever. Not too sweet, just right."
+    },
+    {
+        "product_code": "DS004",
+        "user_email": "snacker@gmail.com",
+        "rating": 4,
+        "comment": "Crispy and sweet. Great afternoon snack."
+    },
+    {
+        "product_code": "SF001",
+        "user_email": "streetfoodie@gmail.com",
+        "rating": 4,
+        "comment": "Classic Banana Cue. Caramelization is spot on."
+    },
+    {
+        "product_code": "SF003",
+        "user_email": "bbqking@gmail.com",
+        "rating": 5,
+        "comment": "Isaw is cleaned well and grilled to perfection. Delicious sauce!"
+    },
+    {
+        "product_code": "SF003",
+        "user_email": "username@gmail.com",
+        "rating": 5,
+        "comment": "My favorite street food item here. Highly recommended."
+    },
+    {
+        "product_code": "SF004",
+        "user_email": "egglover@gmail.com",
+        "rating": 3,
+        "comment": "Batter was a bit thick, but the sauce saved it."
+    },
+    {
+        "product_code": "DR001",
+        "user_email": "refresh@gmail.com",
+        "rating": 5,
+        "comment": "Buko Pandan is so refreshing! Lots of jelly cubes."
+    },
+    {
+        "product_code": "DR002",
+        "user_email": "citrus@gmail.com",
+        "rating": 4,
+        "comment": "Very refreshing Calamansi juice, good balance of sweet and sour."
+    },
+    {
+        "product_code": "DR004",
+        "user_email": "tahofan@gmail.com",
+        "rating": 5,
+        "comment": "Warm Taho in a cup! The arnibal syrup is delicious."
+    }
+]

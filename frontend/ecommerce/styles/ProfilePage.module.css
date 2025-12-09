@@ -136,6 +136,27 @@
   flex-direction: column;
   gap: 15px;
 }
+.formInput {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%; /* Makes input fill the container */
+  background-color: white;
+}
+
+.formInput:focus {
+  border-color: #ff4b2b; /* Highlight color on click */
+}
+
+/* Style for the disabled Email field */
+.formInput:disabled {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
 
 .profileForm input[type="text"],
 .profileForm input[type="email"],
@@ -148,6 +169,8 @@
   transition: border 0.2s ease;
   font-size: 1rem;
 }
+
+
 
 .profileForm input:focus,
 .profileForm select:focus {

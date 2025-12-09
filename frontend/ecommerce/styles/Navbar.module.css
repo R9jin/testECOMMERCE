@@ -1,0 +1,222 @@
+* {
+  box-sizing: border-box;
+  font-family: "Century Gothic", "URW Gothic L", "TeX Gyre Adventor", "FreeSans", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+/* NAVBAR */
+.navBar {
+  background-color: white;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.5rem 4rem;
+  position: relative; /* Needed for absolute positioning of mobile menu if desired */
+  z-index: 1000;
+}
+
+/* Header area to hold Title + Hamburger */
+.navHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+}
+
+/* Site title */
+.siteTitle {
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+/* Hamburger Menu (Hidden by default) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.bar {
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Container for Search + Nav Links */
+.navLinksContainer {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  
+  /* 1. Allow this container to fill the empty space between Logo and Right Edge */
+  flex: 1;
+  
+  /* 2. Push items apart: Search stays Left (near logo), Links go Right */
+  justify-content: space-between;
+  
+  /* 3. Add some spacing so the search bar isn't touching the logo */
+  margin-left: 10rem;
+}
+
+/* Navigation list */
+.navList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.navItemActive {
+  color: #ff4b2b;
+}
+
+.navItemActive .navLink {
+  color: #ff4b2b; /* Fixed: target child link for color */
+  font-weight: bold;
+}
+
+.navItem:hover {
+  background-color: #ff4b2b;
+  color: white;
+}
+
+.navItem:hover .navLink {
+  color: white;
+}
+
+.navLink {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.3s ease;
+}
+
+/* Search bar */
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchBar {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  background-color: lightgray;
+  outline: none;
+  width: 400px; /* Reduced slightly for better fit */
+}
+
+.searchBtn {
+  border: none;
+  background: none;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+  color: inherit;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.searchBtn:hover {
+  background-color: #ff4b2b;
+  color: white;
+}
+
+.searchImg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navBar {
+    padding: 0.5rem 2rem;
+  }
+  .searchBar {
+    width: 250px;
+  }
+}
+
+/* MOBILE VIEW */
+@media (max-width: 768px) {
+  .navBar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .navHeader {
+    width: 100%;
+  }
+
+  .hamburger {
+    display: flex; /* Show hamburger */
+  }
+
+  .navLinksContainer {
+    display: none; /* Hide menu by default */
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+
+  .navLinksContainer.active {
+    display: flex; /* Show when active */
+  }
+
+  .searchContainer {
+    width: 100%;
+    margin: 0;
+  }
+
+  .searchBar {
+    width: 100%;
+  }
+
+  .navList {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .navItem {
+    width: 100%;
+    padding: 0;
+  }
+
+  .navLink {
+    width: 100%;
+    padding: 1rem;
+    justify-content: center; /* Center text on mobile */
+  }
+}

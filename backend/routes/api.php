@@ -9,43 +9,42 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WishlistController;
 
-// Tasks
 Route::apiResource('tasks', TaskController::class);
 
-// Public product endpoints
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-// Auth
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Protected routes
+Route::get('/reviews/{productId}', [ReviewController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/reviews', [ReviewController::class, 'store']);
 
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
     Route::post('/products/restore', [ProductController::class, 'restore']);
 
-    // Wishlist
     Route::post('/wishlist', [WishlistController::class, 'store']);
     Route::get('/wishlist', [WishlistController::class, 'index']);
     Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy']);
+    Route::delete('/wishlist/product/{id}', [WishlistController::class, 'removeByProduct']);
 
-    // Cart
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
+    
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+
     Route::put('/cart/{id}', [CartController::class, 'update']);
     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
-    Route::delete('/cart/clear', [CartController::class, 'clear']);// Make sure this is above the destroy route if conflicting, or use distinct name
-    // Orders
+
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
+    Route::put('/orders/{order}', [OrderController::class, 'update']);
 
-    // Authenticated user info
-    // ✅ PASTE IT HERE:
     Route::put('/user', [AuthController::class, 'update']); 
 
-    // Authenticated user info
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

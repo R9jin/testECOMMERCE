@@ -64,27 +64,21 @@ export const WishlistProvider = ({ children }) => {
     if (!token) return false;
     const id = String(productId);
 
+    // 1. Optimistic Update: Remove from UI immediately
     setWishlistItems(prev => prev.filter(pid => pid !== id));
 
     try {
-      // First fetch current wishlist to find the specific record ID to delete
-      const res = await fetch(`${API_BASE_URL}/wishlist`, {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ Use token
-      });
-      const data = await res.json();
-      
-      const record = data.find(item => String(item.product_id) === id);
-      if (!record) return true;
-
-      const deleteRes = await fetch(`${API_BASE_URL}/wishlist/${record.id}`, {
+      // 2. Call the new endpoint directly using the PRODUCT ID
+      const res = await fetch(`${API_BASE_URL}/wishlist/product/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }, // ✅ Use token
+        headers: { Authorization: `Bearer ${token}` },
       });
       
-      if (!deleteRes.ok) throw new Error("Failed to remove");
+      if (!res.ok) throw new Error("Failed to remove");
       return true;
     } catch (err) {
       console.error("Remove wishlist error:", err);
+      // 3. Revert change if it failed
       setWishlistItems(prev => [...prev, id]);
       return false;
     }

@@ -60,7 +60,6 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        // 1. Validation: Allow both 'Other' (legacy data) and 'Others' (correct data)
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'phone' => 'sometimes|required|string|max:20',
@@ -72,10 +71,8 @@ class AuthController extends Controller
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
 
-        // 2. Prepare the data manually
         $data = $request->only(['name', 'phone', 'dob']);
 
-        // 3. FIX: Check if gender is "Other" and force it to "Others"
         if ($request->has('gender')) {
             $gender = $request->input('gender');
             if ($gender === 'Other') {
@@ -85,7 +82,6 @@ class AuthController extends Controller
             }
         }
 
-        // 4. Update with the sanitized data
         $user->update($data);
 
         return response()->json([

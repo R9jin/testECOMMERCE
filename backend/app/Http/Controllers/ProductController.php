@@ -82,12 +82,12 @@ class ProductController extends Controller
 
     public function restore()
     {
-        // 1. Delete all existing products (Cascade will remove them from carts/wishlists)
+        
         Schema::disableForeignKeyConstraints();
         Product::truncate();
 
         Schema::enableForeignKeyConstraints();
-        // 2. Run the ProductSeeder to insert defaults from JSON
+        
         $seeder = new ProductSeeder();
         $seeder->run();
 

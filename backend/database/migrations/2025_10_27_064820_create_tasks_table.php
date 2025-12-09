@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status')->default('pending'); // pending, in-progress, completed
+            $table->string('status')->default('pending');
             $table->date('due_date')->nullable();
             $table->timestamps();
         });

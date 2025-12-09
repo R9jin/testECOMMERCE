@@ -1,37 +1,43 @@
+import { useState } from "react";
 import styles from "../styles/WishlistCard.module.css";
 
-/**
- * WishlistCard Component
- *
- * Displays a single product in the user's wishlist, showing its image, details,
- * price, and action buttons for adding to cart, buying immediately, or removing.
- */
 function WishlistCard({ product, onRemove, onAddCart, onBuyNow }) {
+  // 1. Add state for visual feedback
+  const [isAdded, setIsAdded] = useState(false);
+
   const imageSrc = product.image_url?.startsWith("http")
     ? product.image_url
     : process.env.PUBLIC_URL + product.image_url;
 
+  // 2. Handle click: call parent function + show feedback
+  const handleAddToCart = () => {
+    onAddCart(product);
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000); // Revert after 2 seconds
+  };
+
   return (
     <div className={styles.wishlistCard}>
-      {/* Product image */}
       <div className={styles.wishlistImage}>
         <img src={imageSrc} alt={product.name} />
       </div>
 
-      {/* Product details */}
       <div className={styles.wishlistDetails}>
         <p><strong>{product.name}</strong></p>
         <p>{product.description}</p>
         <p>{product.sold ?? 0} sold</p>
       </div>
 
-      {/* Product price */}
       <div className={styles.wishlistPrice}>₱{product.price}</div>
 
-      {/* Action buttons */}
       <div className={styles.wishlistActions}>
-        <button className={styles.addCart} onClick={() => onAddCart(product)}>
-          Add to Cart
+        {/* 3. Update Button with conditional styling and text */}
+        <button 
+          className={`${styles.addCart} ${isAdded ? styles.added : ""}`} 
+          onClick={handleAddToCart}
+          disabled={isAdded}
+        >
+          {isAdded ? "Added!" : "Add to Cart"}
         </button>
 
         <button className={styles.buyNow} onClick={() => onBuyNow(product)}>

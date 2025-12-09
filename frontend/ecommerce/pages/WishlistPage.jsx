@@ -19,7 +19,7 @@ export default function WishListPage() {
         const res = await fetch("http://127.0.0.1:8000/api/products");
         const data = await res.json();
         // Check if data.data exists (Laravel resource response) or just data
-        setAllProducts(data.data || data); 
+        setAllProducts(data.data || data);
       } catch (err) {
         console.error("Failed to fetch products:", err);
         setAllProducts([]);
@@ -35,7 +35,6 @@ export default function WishListPage() {
 
   const handleAddCart = (product) => {
     addToCart({ ...product, quantity: 1 });
-    alert(`${product.name} added to cart!`);
   };
 
   const handleBuyNow = (product) => {
